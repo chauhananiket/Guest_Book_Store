@@ -1,0 +1,220 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author Aniket Chauhan
+ */
+@WebServlet(urlPatterns = {"/MainPage"})
+public class MainPage extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            
+        out.println("<!DOCTYPE html>");
+         
+        out.println("<html>");
+        
+        out.println("<head>");
+        
+        out.println(
+                "<style type='text/css'>"
+                +"#mainform{"
+                + "width:400px;"
+                + "margin:4px;"
+                + "padding:3px;"
+                 
+                + "left: 0;\n" 
+                + "right: 0;\n" 
+                
+               
+                + "}"
+                + "#show{"
+                        + "width:800px;"
+                          + "padding-left:20px;"
+                      + "margin:4px;"
+                     
+                       
+                        + "margin-right:40px;"
+                        + "padding-right:4px;"
+                        + "}"
+                + "</style>");
+
+        out.println("<title>Book Store</title>");  
+        
+        out.println(""
+  
+                + "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script> "
+                
+                +" <meta charset=\"utf-8\">"
+         
+                +" <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">"
+        
+                +" <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\" integrity=\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\" crossorigin=\"anonymous\">");
+        
+      
+        
+        out.println("</head>");
+        
+        out.println("<body bgcolor='aqua'>");
+        
+        out.println(
+                "<center><h1>Book Store</h1></center>" +
+                
+                "<hr/><center>"+
+                
+                "<div id='mainform' >"+
+                
+                "<form method='post'>"+
+                
+                "<div class=\"form-group\" >\n" +
+                
+                "<label for=\"exampleFormControlInput1\">Name</label>\n" +
+                
+                "<input type=\"text\" name='name' class=\"form-control\" id=\"exampleFormControlInput1\" placeholder=\"book name\">\n" +
+                
+                "</div>\n"+ 
+                
+                "<div class=\"form-group\" >\n" +
+                
+                "<label for=\"exampleFormControlInput1\">Email address</label>\n" +
+                
+                "<input type=\"email\" name='email' class=\"form-control\" id=\"exampleFormControlInput1\" placeholder=\"name@example.com\">\n" +
+
+                "</div>\n" + 
+
+                "<div class=\"form-group\">\n" +
+    
+                "<label for=\"exampleFormControlTextarea1\">Comments</label>\n" +
+
+              
+  "<input type=\"text\" name='message' class=\"form-control\" id=\"exampleFormControlInput1\"placeholder=\"comments\">\n" +
+                "</div>"+ 
+                
+                "<center>"+
+                         
+                "<button type=\"submit\"  onclick=\"javascript: form.action='Insert';\"   class=\"btn btn-secondary\">Insert</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                
+                "<button type=\"submit\"  onclick=\"javascript: form.action='Update';\" class=\"btn btn-secondary\">Update</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                 
+                "<button type=\"submit\"  onclick=\"javascript: form.action='Delete';\" class=\"btn btn-secondary\">Delete</button></center>"+
+               
+                "</form>"+
+                
+                "</div></center><hr>"+ 
+                "<center><div id='show'>"
+                        + "<center><h2>Entries</h2></center> "
+                        + "<table class=\"table\">\n" +
+"  <thead>\n" +
+"    <tr>\n" +
+"      <th scope=\"col\">Name</th>\n" +
+"      <th scope=\"col\">Email</th>\n" +
+"      <th scope=\"col\">Comments</th>\n" +
+"    </tr>\n" +
+"  </thead>\n"); 
+     
+        Class.forName("com.mysql.jdbc.Driver");  //Loading the driver
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/book","root","root"); 
+            String q = "select * from bookstore";
+            Statement sc = con.createStatement();
+            ResultSet rs = sc.executeQuery(q);
+        while(rs.next()){
+      
+            out.print(
+"  <tbody>\n" +
+"    <tr>\n" +
+ "     <td>"+rs.getString(1)+"</td>\n" +
+"      <td>"+rs.getString(2)+"</td>\n" +
+"      <td>"+rs.getString(3)+"</td>\n"+
+"    </tr>\n" +
+"  </tbody>\n" 
+
+        );}
+        out.print("</table></div></center>");
+        
+        out.println(
+                ""+
+                
+                " <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\n" +
+
+                " <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js\" integrity=\"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49\" crossorigin=\"anonymous\"></script>\n" +
+
+                " <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>");
+        
+        
+        
+        out.println("</body>");
+        
+        out.println("</html>");
+            
+        }
+        catch(Exception e ){}
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
